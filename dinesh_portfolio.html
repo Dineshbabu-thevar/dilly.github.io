@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinesh Babu Thevar — Developer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #7c6aff;
+    --accent2: #ff6a8a;
+    --accent3: #6affca;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --typing-speed: 0.04s;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridShift 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gridShift {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
+  /* Glow blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+    animation: blobFloat 8s ease-in-out infinite;
+  }
+  .blob-1 { width: 400px; height: 400px; background: var(--accent); top: -100px; right: -100px; }
+  .blob-2 { width: 300px; height: 300px; background: var(--accent2); bottom: 100px; left: -80px; animation-delay: -4s; }
+  .blob-3 { width: 250px; height: 250px; background: var(--accent3); top: 50%; left: 50%; animation-delay: -2s; }
+
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -20px) scale(1.05); }
+  }
+
+  /* Main layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeSlideDown 0.8s ease both;
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 7vw, 64px);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .header .tagline {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+  }
+
+  /* Chat Interface */
+  .chat-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(124,106,255,0.08), 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeSlideUp 0.8s 0.2s ease both;
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chat-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .chat-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .chat-info p {
+    font-size: 11px;
+    color: var(--accent3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .online-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* Messages area */
+  .messages {
+    padding: 28px 24px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .msg {
+    display: flex;
+    gap: 12px;
+    animation: msgAppear 0.4s ease both;
+    opacity: 0;
+  }
+
+  @keyframes msgAppear {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    margin-top: 4px;
+  }
+
+  .msg.bot .msg-avatar {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .msg.user .msg-avatar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .msg-content {
+    max-width: 78%;
+  }
+
+  .msg.user .msg-content { align-items: flex-end; }
+
+  .bubble {
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .msg.bot .bubble {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
+  }
+
+  .msg.user .bubble {
+    background: linear-gradient(135deg, rgba(124,106,255,0.15), rgba(255,106,138,0.1));
+    border: 1px solid rgba(124,106,255,0.3);
+    border-top-right-radius: 4px;
+    text-align: right;
+  }
+
+  .bubble strong { color: var(--text); font-weight: 600; }
+  .bubble br { display: block; content: ""; margin: 6px 0; }
+
+  /* Stats row */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .stat-card {
+    background: rgba(124,106,255,0.08);
+    border: 1px solid rgba(124,106,255,0.25);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    min-width: 90px;
+  }
+
+  .stat-card .val {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .stat-card .lbl {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Skill tags */
+  .skill-tag {
+    display: inline-block;
+    background: rgba(124,106,255,0.15);
+    border: 1px solid rgba(124,106,255,0.3);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin: 4px;
+    font-weight: 500;
+    color: var(--accent);
+    transition: all 0.2s;
+  }
+
+  .skill-tag:hover {
+    background: rgba(124,106,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  .skill-tag.green {
+    background: rgba(106,255,202,0.15);
+    border-color: rgba(106,255,202,0.3);
+    color: var(--accent3);
+  }
+
+  .skill-tag.pink {
+    background: rgba(255,106,138,0.15);
+    border-color: rgba(255,106,138,0.3);
+    color: var(--accent2);
+  }
+
+  .skill-tag.gold {
+    background: rgba(255,193,7,0.15);
+    border-color: rgba(255,193,7,0.3);
+    color: #ffc107;
+  }
+
+  /* Project cards */
+  .project-card {
+    background: linear-gradient(135deg, rgba(124,106,255,0.05), rgba(255,106,138,0.03));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(124,106,255,0.2);
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .project-meta {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: auto;
+    font-weight: 400;
+  }
+
+  .project-desc {
+    color: var(--text);
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tech-badge {
+    background: rgba(124,106,255,0.1);
+    border: 1px solid rgba(124,106,255,0.25);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    color: var(--accent);
+  }
+
+  /* Experience card */
+  .exp-card {
+    background: linear-gradient(135deg, rgba(124,106,255,0.07), rgba(255,106,138,0.04));
+    border: 1px solid rgba(124,106,255,0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 10px 0;
+  }
+
+  .exp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Cert list */
+  .cert-list {
+    margin-top: 14px;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(124,106,255,0.1);
+    font-size: 12.5px;
+  }
+
+  .cert-item:last-child { border: none; }
+
+  .cert-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    border-top-left-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .typing-indicator.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: typingBounce 1.4s infinite;
+  }
+
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-8px); opacity: 1; }
+  }
+
+  /* Buttons area */
+  .buttons-area {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 500;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(124,106,255,0.2), rgba(255,106,138,0.15));
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124,106,255,0.3);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container { padding: 24px 16px 60px; }
+    .header h1 { font-size: 40px; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-card { min-width: 80px; }
+    .msg-content { max-width: 88%; }
+    .buttons-area { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-label">// interactive portfolio</div>
+    <h1>Dinesh Babu Thevar</h1>
+    <div class="tagline">BTech AI/ML · Full Stack Developer · Cybersecurity · Game Dev</div>
+  </div>
+
+  <div class="chat-wrap">
+    <!-- Chat header -->
+    <div class="chat-header">
+      <div class="chat-avatar">D</div>
+      <div class="chat-info">
+        <h3>Dinesh Babu Thevar</h3>
+        <p><span class="online-dot"></span> Active now · Mumbai</p>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages" id="messages">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Typing indicator -->
+    <div style="padding: 0 24px 0 68px;" id="typing-wrap">
+      <div class="typing-indicator" id="typing">
+        <div class="typing-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick-ask buttons -->
+    <div class="buttons-area" id="buttons">
+      <button class="btn" onclick="askAbout('degree')">🎓 Education</button>
+      <button class="btn" onclick="askAbout('skills')">⚡ Technical Skills</button>
+      <button class="btn" onclick="askAbout('projects')">🚀 Projects</button>
+      <button class="btn" onclick="askAbout('experience')">💼 Experience</button>
+      <button class="btn" onclick="askAbout('certs')">📜 Certifications</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const msgs = document.getElementById('messages');
+  const typingEl = document.getElementById('typing');
+  let isTyping = false;
+  const asked = {};
+
+  const DINESH = {
+    degree: {
+      q: "🎓 What's your educational background?",
+      html: `
+        <div>
+          I'm currently pursuing a <strong>B.Tech in Artificial Intelligence & Machine Learning</strong> at <strong>Universal SkillTech University, Mumbai</strong> 🎓
+          <br><br>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">BTech</div><div class="lbl">Degree</div></div>
+            <div class="stat-card"><div class="val" style="color:var(--accent3)">AI/ML</div><div class="lbl">Specialization</div></div>
+            <div class="stat-card"><div class="val" style="color:var(--accent2)">7.6</div><div class="lbl">CGPA</div></div>
+            <div class="stat-card"><div class="val">2024–28</div><div class="lbl">Duration</div></div>
+          </div>
+          <br>
+          The program covers <strong>machine learning, deep learning, data science, Python for AI, computer vision, NLP</strong>, and related domains. My current CGPA stands at <strong>7.6</strong> and I'm constantly learning and building! 🚀
+        </div>
+      `
+    },
+    skills: {
+      q: "⚡ What are your technical skills?",
+      html: `
+        <div>
+          I have a diverse tech stack spanning multiple domains! Here's what I bring to the table 💪
+          <br><br>
+          <strong style="color:var(--accent)">🔥 Programming Languages:</strong><br>
+          <span class="skill-tag">Python (Expert)</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">SQL</span>
+          <br><br>
+          <strong style="color:var(--accent3)">🎮 Game Development:</strong><br>
+          <span class="skill-tag green">Unity Pro Editor</span>
+          <span class="skill-tag green">Game Asset Creation</span>
+          <span class="skill-tag green">C# Scripting</span>
+          <span class="skill-tag green">3D/2D Design</span>
+          <span class="skill-tag green">3–4 yrs experience</span>
+          <br><br>
+          <strong style="color:var(--accent2)">🔐 Cybersecurity:</strong><br>
+          <span class="skill-tag pink">Ethical Hacking</span>
+          <span class="skill-tag pink">Network Security</span>
+          <span class="skill-tag pink">Penetration Testing</span>
+          <span class="skill-tag pink">Cisco Certified</span>
+          <br><br>
+          <strong style="color:#ffc107">🌐 Web Development & Frameworks:</strong><br>
+          <span class="skill-tag gold">HTML/CSS/JS</span>
+          <span class="skill-tag gold">React.js</span>
+          <span class="skill-tag gold">Node.js</span>
+          <span class="skill-tag gold">DOM Manipulation</span>
+          <span class="skill-tag gold">Responsive Design</span>
+          <br><br>
+          <strong style="color:var(--muted)">🤖 AI/ML & Data Science:</strong><br>
+          <span class="skill-tag">Python for Data Analysis</span>
+          <span class="skill-tag">Machine Learning</span>
+          <span class="skill-tag">Data Visualization</span>
+          <span class="skill-tag">Pandas/NumPy</span>
+          <span class="skill-tag">IBM Certified</span>
+        </div>
+      `
+    },
+    projects: {
+      q: "🚀 Show me your projects",
+      html: `
+        <div>
+          I love building things that solve real problems! Here are some of my key projects:
+          <br><br>
+          <div class="project-card">
+            <div class="project-title">
+              🩸 Mioni — Blood Donation Online Platform
+              <span class="project-meta">Web App · 2025</span>
+            </div>
+            <div class="project-desc">
+              A comprehensive online blood donation platform connecting donors with recipients in real-time. Features include donor registration, blood request management, location-based matching, emergency alerts, and donation history tracking.
+            </div>
+            <div class="project-tech">
+              <span class="tech-badge">React.js</span>
+              <span class="tech-badge">Node.js</span>
+              <span class="tech-badge">MongoDB</span>
+              <span class="tech-badge">Geolocation API</span>
+              <span class="tech-badge">Responsive Design</span>
+            </div>
+          </div>
+          
+          <div class="project-card">
+            <div class="project-title">
+              💡 Ideathon Winner — Innovation Hackathon
+              <span class="project-meta">Hackathon · 2025</span>
+            </div>
+            <div class="project-desc">
+              Participated and won in a college-level Ideathon focused on solving real-world problems through technology. Pitched an innovative solution combining AI and IoT for smart campus management with team collaboration and rapid prototyping.
+            </div>
+            <div class="project-tech">
+              <span class="tech-badge">Problem Solving</span>
+              <span class="tech-badge">Rapid Prototyping</span>
+              <span class="tech-badge">Team Leadership</span>
+              <span class="tech-badge">AI/IoT</span>
+              <span class="tech-badge">Presentation</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-title">
+              🎮 Unity Game Projects
+              <span class="project-meta">Freelance · 2022–Present</span>
+            </div>
+            <div class="project-desc">
+              Developed multiple 2D and 3D games using Unity Pro Editor with custom asset creation, physics implementation, AI pathfinding, and game mechanics. Specialized in action-adventure and puzzle genres with polished UI/UX.
+            </div>
+            <div class="project-tech">
+              <span class="tech-badge">Unity 3D</span>
+              <span class="tech-badge">C# Scripting</span>
+              <span class="tech-badge">Game Physics</span>
+              <span class="tech-badge">Asset Management</span>
+              <span class="tech-badge">UI/UX Design</span>
+            </div>
+          </div>
+          <br>
+          These projects showcase my ability to work across the full development stack — from ideation to deployment! 🎯
+        </div>
+      `
+    },
+    experience: {
+      q: "💼 Tell me about your experience",
+      html: `
+        <div>
+          I've been building real-world experience across multiple domains since before starting my degree! Here's my journey:
+          <br><br>
+          <div class="exp-card" style="border-color:rgba(124,106,255,0.3); background: linear-gradient(135deg,rgba(124,106,255,0.07),rgba(255,106,138,0.04))">
+            <div class="exp-title" style="color:var(--accent)">
+              🔐 Co-founder & Technical Lead — Seqvolute Cybersecurity 
+              <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:auto">2024–2025</span>
+            </div>
+            Built <strong>low-cost cybersecurity infrastructure</strong> for PC networks and browsing centers. Led technical strategy, represented the college at <strong>Mumbai University</strong>, and contributed to the college's first <strong>E-Cell cybersecurity initiative</strong>. Focused on network security, threat analysis, and affordable security solutions.
+          </div>
+          <br>
+          <div class="exp-card" style="border-color:rgba(255,106,138,0.3); background: linear-gradient(135deg,rgba(255,106,138,0.06),rgba(106,255,202,0.03))">
+            <div class="exp-title" style="color:var(--accent2)">
+              🎮 Freelance Game Developer 
+              <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:auto">2022–Present</span>
+            </div>
+            Developing professional games using <strong>Unity Pro Editor</strong> with advanced C# scripting, raw file extension handling, and comprehensive asset management. <strong>3–4 years</strong> of hands-on experience creating 2D/3D games, implementing physics, AI behaviors, and polished game mechanics — all before even starting my degree!
+          </div>
+          <br>
+          <div class="exp-card" style="border-color:rgba(106,255,202,0.3); background: linear-gradient(135deg,rgba(106,255,202,0.06),rgba(124,106,255,0.03))">
+            <div class="exp-title" style="color:var(--accent3)">
+              💻 Full Stack Development Projects
+              <span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:auto">2024–Present</span>
+            </div>
+            Built multiple web applications including the <strong>Mioni blood donation platform</strong> using React.js, Node.js, and MongoDB. Experience with responsive design, API integration, database management, and deploying production-ready applications.
+          </div>
+        </div>
+      `
+    },
+    certs: {
+      q: "📜 What certifications do you have?",
+      html: `
+        <div>
+          I've earned industry-recognized certifications that validate my technical skills 🏆
+          <div class="cert-list">
+            <div class="cert-item">
+              <span class="cert-icon">🔵</span>
+              <span><strong>Data Analyst in Python</strong> — IBM · Covers pandas, NumPy, data visualization, and statistical analysis (2025)</span>
+            </div>
+            <div class="cert-item">
+              <span class="cert-icon">🔴</span>
+              <span><strong>Ethical Hacking Certification</strong> — Cisco · Network security, penetration testing, and cybersecurity fundamentals (2025)</span>
+            </div>
+            <div class="cert-item">
+              <span class="cert-icon">🟢</span>
+              <span><strong>Skill Level Internship & Placement Completion</strong> — Professional development and industry exposure (May–June 2025)</span>
+            </div>
+            <div class="cert-item">
+              <span class="cert-icon">⭐</span>
+              <span><strong>Recommendation Letter</strong> — Internship completion with excellent performance review (2025)</span>
+            </div>
+            <div class="cert-item">
+              <span class="cert-icon">🎮</span>
+              <span><strong>Unity Certified Developer</strong> — Advanced game development and C# programming (Self-learned, 2022)</span>
+            </div>
+          </div>
+          <br>
+          <strong style="color:var(--accent)">IBM + Cisco</strong> certifications in the same year? That's a powerful combination of data science and cybersecurity expertise! 💡
+        </div>
+      `
+    }
+  };
+
+  function addMsg(html, role, delay = 0) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const msg = document.createElement('div');
+        msg.className = `msg ${role}`;
+        const isBot = role === 'bot';
+        msg.innerHTML = `
+          <div class="msg-avatar">${isBot ? 'D' : '👤'}</div>
+          <div class="msg-content">
+            <div class="bubble">${html}</div>
+          </div>
+        `;
+        msg.style.animationDelay = '0s';
+        msgs.appendChild(msg);
+        msgs.scrollTop = msgs.scrollHeight;
+        resolve();
+      }, delay);
+    });
+  }
+
+  function showTyping() {
+    typingEl.classList.add('visible');
+  }
+
+  function hideTyping() {
+    typingEl.classList.remove('visible');
+  }
+
+  async function askAbout(key) {
+    if (isTyping || asked[key]) return;
+    isTyping = true;
+    asked[key] = true;
+
+    // Disable all buttons briefly
+    document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+
+    const data = DINESH[key];
+
+    // User message
+    await addMsg(data.q, 'user');
+
+    // Typing indicator
+    showTyping();
+    msgs.scrollTop = msgs.scrollHeight;
+
+    // Simulate thinking time
+    const thinkTime = 1000 + Math.random() * 800;
+    await new Promise(r => setTimeout(r, thinkTime));
+
+    hideTyping();
+    await addMsg(data.html, 'bot');
+
+    isTyping = false;
+
+    // Re-enable unasked buttons
+    document.querySelectorAll('.btn').forEach(b => {
+      const k = b.getAttribute('onclick').match(/'(\w+)'/)[1];
+      if (!asked[k]) b.disabled = false;
+      else { b.disabled = true; b.classList.add('active'); }
+    });
+  }
+
+  // Initialize with greeting
+  async function init() {
+    await new Promise(r => setTimeout(r, 400));
+    showTyping();
+    await new Promise(r => setTimeout(r, 1200));
+    hideTyping();
+    await addMsg(`Hey there! 👋 I'm <strong>Dinesh Babu Thevar</strong> — a BTech AI/ML student passionate about building innovative solutions across web development, game development, and cybersecurity.
+      <br><br>
+      From creating the <strong>Mioni blood donation platform</strong> to winning hackathons and building games for 3+ years, I love turning ideas into reality. Click any button below to explore my work! 🚀`, 'bot');
+
+    document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+  }
+
+  init();
+</script>
+</body>
+</html>
